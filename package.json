@@ -1,0 +1,24 @@
+{
+  "name": "oe-anh-doe",
+  "version": "1.0.0",
+  "description": "```\r npm install -g typescript\r npm install\r ```",
+  "main": "bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lee-seungjae/oe-anh-doe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lee-seungjae/oe-anh-doe/issues"
+  },
+  "homepage": "https://github.com/lee-seungjae/oe-anh-doe#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}

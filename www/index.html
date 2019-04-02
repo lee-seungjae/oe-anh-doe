@@ -6,9 +6,63 @@
 	<meta http-equiv="expires" content="mon, 06 jan 1990 00:00:01 GMT" />
 	<style>
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <script src='bundle.js'></script>
 </head>
-
 <body bgcolor="#e0e0e0">
+    <div style='position:absolute; margin:auto; top:0; right:0; bottom:0; left:0; width:1000px; height:700px;'>
+        <div class="ui raised segment" style='padding:40px;'>
+            <div class="ui label" style='font-size:20px; width:925px; padding-left:21px; margin-left:0'>
+                이번에 가 본 맛집은 너무 맛있어서 그 맛을 간음할 수가 없었어요.
+            </div>
+
+            <div class="ui" style="color: #999; margin-top:40px;">
+                위 문장의 잘못된 곳을 올바르게 고쳐서 입력하세요.<br/>
+                잘못된 곳이 없다면 그대로 입력하세요.<br/>
+            </div>
+            <div class="ui action left input" style='margin-top:20px'>
+                <input type="text" placeholder="이번에 가 본 맛집은 너무 맛있어서 그 맛을 간음할 수가 없었어요." style='width:850px; font-size:20px;'>
+                <div class="ui blue button" style='font-size:20px;'>⏎</div>
+            </div>
+
+            <div style='margin-top:40px; display:none;'>
+                <div class="ui green icon message" style='padding:20pt;'>
+                    <div class="content">
+                        <div class="header" style='font-size:30px;'>맞았습니다!</div>
+                    </div>
+                </div>                
+            </div>
+
+            <div style='margin-top:40px;'>
+                <div class="ui warning icon message" style='padding:20pt;'>
+                    <div class="content">
+                        <div class="header" style='font-size:30px;'>틀렸어요...</div>
+                        <br/>
+                        <div style='font-size:20px; font-weight:bold; margin-top:10pt;'>
+                            정답: 이번에 가 본 맛집은 너무 맛있어서 그 맛을 가늠할 수가 없었어요.
+                        </div>
+
+                        <div class="ui orange button" style='font-size:20px; margin-top:20pt;'>다시 해보기</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style='margin-top:45px;'>
+            <div class="ui gray progress" data-percent="74" id="example1">
+                <div class="bar"></div>
+                <div class="label" style='color:#999'>2 / 10</div>
+            </div>
+        </div>
+    </div>
+    
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
 </body>
 </html>

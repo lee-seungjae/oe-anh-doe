@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "lib": [ "dom", "es5", "es6" ],
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "removeComments": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "outDir": "build/",
+    "sourceMap": true,
+    "target": "es5",
+    "inlineSources": true,
+    "rootDir": ".."
+  },
+  "include": [
+    "src/*.ts"
+  ],
+  "exclude": [
+  ]
+}

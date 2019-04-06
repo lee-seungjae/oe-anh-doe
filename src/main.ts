@@ -4,6 +4,7 @@ import { ProblemView } from './ProblemView'
 import { ResultView } from './ResultView';
 
 // TODO:
+// 결과창 크게
 // 문제에 같은/다른 텍스트 하이라이트 표시
 
 let rawData = [

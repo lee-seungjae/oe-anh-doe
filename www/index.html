@@ -13,6 +13,45 @@
             bottom:0;
             left:0; 
         }
+
+        /* https://www.w3schools.com/howto/howto_css_modals.asp */
+        .modalBackground {
+            display: nodne; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+        }
+        .modalDialog {
+            margin: 15% auto; /* 15% from the top and centered */
+        }
+
+        /* https://stackoverflow.com/questions/40549227/how-to-create-a-pop-up-animation-with-a-modal-using-css/40549695 */
+        @keyframes kf_popin {
+            0%{
+                transform: scale(0);
+            }
+            50%{
+                transform: scale(1.2);
+            }
+            100%{
+                transform: scale(1);
+            }
+        }
+
+        @keyframes kf_drop {
+            0%{
+                transform: translatey(-500px);
+            }
+            100%{
+                transform: translatey(0px);
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -25,6 +64,7 @@
             <div class="ui" style="color: #999;"><span id="currentProblemNumber">1</span> / <span id="totalProblemCount">10</span></div>
 
             <div id="question" class="ui label" style='font-size:20px; width:925px; padding-left:21px; margin-left:0'>
+                &nbsp;
             </div>
 
             <div class="ui" style="color: #999; margin-top:40px;">
@@ -61,46 +101,34 @@
             </table>
 
             <div style='text-align:center;'>
-                <div id="retryButton" class="ui blue button" style='font-size:20px; margin-top:20pt;'>다시 해보기 ⏎</div>
+                <div id="retryButton" class="ui blue button" style='font-size:20px; margin-top:20px;'>다시 해보기 ⏎</div>
             </div>
             <div style='text-align:center;'>
-                <div id="perfect" style='font-size:20px; margin-top:20pt;'>😄 모두 한번에 통과했어요!</div>
+                <div id="perfect" style='font-size:20px; margin-top:30px;'>😄 모두 한번에 통과했어요!</div>
             </div>
         </div>
     </div>    
 
-<!--
-    아오 div 중앙정렬 맞추다가 GG;
-    그냥 alert 써야......
-
-    <div id="correctDlg" class='dialog' style='width: 800px; height: 200px;'>
-        <div class="ui green icon message" style='padding:20pt;'>
-            <div class="content">
-                <div class="header" style='font-size:30px;'>맞았습니다!</div>
+    <div id="modalBackground" class="modalBackground" style='display:none;'>
+        <div id="correctDlg" class="modalDialog" style='width:500px; animation:kf_popin 0.7s'>
+            <div class="ui success message" style='padding:40px; text-align:center;'>
+                <div class="header" style='font-size:30px;'>맞았어요! 👏👏👏</div>
             </div>
-        </div>                
-    </div>
+        </div>
 
-    <div id="wrongDlg" class='dialog' style='width: 800px; height: 100px;'>
-        <div class="ui warning icon message" style='padding:20pt;'>
-            <div class="content">
-                <div class="header" style='font-size:30px;'>틀렸어요...</div>
+        <div id="wrongDlg" class='modalDialog' style='animation:kf_drop 0.7s; width:800px;'>
+            <div class="ui warning message" style='padding:40px; text-align:center;'>
+                <div class="header" style='font-size:30px;'>틀렸어요... 😢</div>
                 <br/>
-                <div style='font-size:20px; font-weight:bold; margin-top:10pt;'>
-                    정답: <span id='rightAnswer'>이번에 가 본 맛집은 너무 맛있어서 그 맛을 가늠할 수가 없었어요.</span>
+                <div style='font-size:20px; font-weight:bold; margin-top:30px;'>
+                    정답: "<span id='rightAnswer'>이번에 가 본 맛집은 너무 맛있어서 그 맛을 가늠할 수가 없었어요.</span>"
                 </div>
 
-                <div id="retry" class="ui orange button" style='font-size:20px; margin-top:20pt;'>다시 해보기 ⏎</div>
+                <div id="retry" class="ui orange button" style='font-size:20px; margin-top:50px;'>다시 해보기 ⏎</div>
             </div>
         </div>
     </div>
--->
 <br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
 
 </body>
 </html>

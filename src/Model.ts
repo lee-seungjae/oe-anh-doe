@@ -1,4 +1,4 @@
-import { Question } from './Question'
+import { Problem } from './Problem'
 
 export class Model
 {
@@ -6,17 +6,13 @@ export class Model
     totalProblemCount: number;
     retryCounts: number[] = [];
     thisProblemRetryCount: number = 0;
-
-    problems: Question[] = [
-        { questionText: '외않되', rightAnswer: '왜안돼' },
-        { questionText: '시럽계', rightAnswer: '실업계' },
-        { questionText: '사생활치매', rightAnswer: '사생활침해' },
-    ];
+    problems: Problem[];
     
-    constructor()
+    constructor(problems: Problem[])
     {        
+        this.problems = problems;
         this.currentProblemNumber = 1;
-        this.totalProblemCount = this.problems.length;
+        this.totalProblemCount = problems.length;
     }
 
     goToStart(): void
@@ -38,7 +34,7 @@ export class Model
         ++this.currentProblemNumber;
     }
 
-    getCurrentProblem(): Question
+    getCurrentProblem(): Problem
     {
         return this.problems[this.currentProblemNumber - 1];
     }

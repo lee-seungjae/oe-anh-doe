@@ -17,6 +17,7 @@
     "rootDir": ".."
   },
   "include": [
+    "node_modules/@types/jquery/JQuery.d.ts",
     "src/*.ts"
   ],
   "exclude": [

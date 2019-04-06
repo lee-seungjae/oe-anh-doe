@@ -38,6 +38,37 @@
             </div>
         </div>
     </div>
+
+    <div id='resultDlg' class='dialog' style='width:800px; margin-top:10%;'>
+        <div class="ui raised segment" style='padding:40px;'>
+            <table class="ui celled table">
+                <thead>
+                  <tr>
+                    <th style='width:80%'>문제</th>
+                    <th>결과</th>
+                  </tr>
+                </thead>
+                <tbody id='tbody'>
+                  <tr id='trNo'>
+                    <td id='question'></td>
+                    <td class="negative"><i class="icon close"></i> <span id='retryCount'></span>번 틀림</td>
+                  </tr>
+                  <tr id='trYes'>
+                    <td id='question'></td>
+                    <td class="positive"><i class="icon checkmark"></i> 한번에 통과!</td>
+                  </tr>
+                </tbody>
+            </table>
+
+            <div style='text-align:center;'>
+                <div id="retryButton" class="ui blue button" style='font-size:20px; margin-top:20pt;'>다시 해보기 ⏎</div>
+            </div>
+            <div style='text-align:center;'>
+                <div id="perfect" style='font-size:20px; margin-top:20pt;'>😄 모두 한번만에 통과했어요!</div>
+            </div>
+        </div>
+    </div>    
+
 <!--
     아오 div 중앙정렬 맞추다가 GG;
     그냥 alert 써야......

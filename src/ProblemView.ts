@@ -1,7 +1,8 @@
 import { Model } from './Model';
 
-export class View {
+export class ProblemView {
     // controls
+    private $root: JQuery;
     private $question: JQuery;
     private $answer: JQuery;
     private $enterButton: JQuery;
@@ -16,11 +17,12 @@ export class View {
     constructor(model: Model) {
         this.model = model;
 
-        this.$question = $('#question');
-        this.$answer = $('#answer');
-        this.$enterButton = $('#enterButton');
-        this.$currentProblemNumber = $('#currentProblemNumber');
-        this.$totalProblemCount = $('#totalProblemCount');    
+        this.$root = $('#problemDlg')
+        this.$question = $('#problemDlg #question');
+        this.$answer = $('#problemDlg #answer');
+        this.$enterButton = $('#problemDlg #enterButton');
+        this.$currentProblemNumber = $('#problemDlg #currentProblemNumber');
+        this.$totalProblemCount = $('#problemDlg #totalProblemCount');    
 
         this.$answer.keypress(event => {
             if (event.originalEvent.keyCode === 13) {
@@ -47,5 +49,16 @@ export class View {
 
     resetAnswerText(): void {
         this.$answer.val('');
+    }
+
+    show(yes: boolean): void {
+        if (yes)
+        {
+            this.$root.show();
+        }
+        else
+        {
+            this.$root.hide();
+        }
     }
 }

@@ -1,37 +1,77 @@
-import { View } from './View'
 import { Scoring } from './Scoring'
 import { Model } from './Model'
+import { ProblemView } from './ProblemView'
+import { ResultView } from './ResultView';
 
 // TODO:
-// 한방에 다 맞히면 성공
 // 텍스트 랜덤 처리
 
-
 $(document).ready(() => {
+    //return testResultView();
+
     let model = new Model();
-    let view = new View(model);
+    let pview = new ProblemView(model);
+    let rview = new ResultView(model);
 
-    model.goToStart();
-    view.setUpQuestion();
+    function reset()
+    {
+        rview.show(false);
+        model.goToStart();
+        pview.setUpQuestion();
+        pview.resetAnswerText();
+        pview.show(true);
+    }
 
-    view.onEnter = () => {
+    pview.onEnter = () => {
         let p = model.getCurrentProblem();
-        if (view.getAnswer() == p.rightAnswer)
+        if (pview.getAnswer() !== p.rightAnswer)
         {
-            alert('맞았어요! 👏')
-            if (model.next())
-            {
-                view.setUpQuestion();
-                view.resetAnswerText();
-            }
-            else
-            {
+            alert(`틀렸어요.. 😢\n\n정답은 "${p.rightAnswer}" 입니다.\n\n다시 해볼까요?`)
+            model.retry();
+            pview.resetAnswerText();
+            return;
+        }
 
-            }
+        alert('맞았어요! 👏')
+        model.next();
+
+        if (model.getCurrentProblem())
+        {
+            pview.setUpQuestion();
+            pview.resetAnswerText();
         }
         else
         {
-            alert(`틀렸어요.. 😢\n\n정답은 "${p.rightAnswer}" 입니다.\n\n다시 해볼까요?`)
-        }        
+            pview.show(false);
+            rview.update();
+            rview.show(true);
+        }
     }
+
+    rview.onRetry = () => {
+        reset();
+    }
+
+    // 초기화
+    reset();
 });
+
+function testResultView()
+{
+    let model = new Model();
+    let rview = new ResultView(model);
+
+    model.goToStart();
+
+    model.next();
+
+    model.retry();
+    model.next();
+
+    model.retry();
+    model.retry();
+    model.next();
+
+    rview.update();
+    rview.onRetry = () => alert('RETRY');
+}

@@ -4,8 +4,10 @@ export class Model
 {
     currentProblemNumber: number;
     totalProblemCount: number;
+    retryCounts: number[] = [];
+    thisProblemRetryCount: number = 0;
 
-    private questions: Question[] = [
+    problems: Question[] = [
         { questionText: '외않되', rightAnswer: '왜안돼' },
         { questionText: '시럽계', rightAnswer: '실업계' },
         { questionText: '사생활치매', rightAnswer: '사생활침해' },
@@ -14,29 +16,30 @@ export class Model
     constructor()
     {        
         this.currentProblemNumber = 1;
-        this.totalProblemCount = this.questions.length;
+        this.totalProblemCount = this.problems.length;
     }
 
     goToStart(): void
     {
+        this.retryCounts = [];
         this.currentProblemNumber = 1;
+        this.thisProblemRetryCount = 0;
     }
 
-    next(): boolean
+    retry(): void
     {
-        if (this.currentProblemNumber < this.totalProblemCount)
-        {
-            ++this.currentProblemNumber;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        ++this.thisProblemRetryCount;
+    }
+
+    next(): void
+    {
+        this.retryCounts.push(this.thisProblemRetryCount);
+        this.thisProblemRetryCount = 0;
+        ++this.currentProblemNumber;
     }
 
     getCurrentProblem(): Question
     {
-        return this.questions[this.currentProblemNumber - 1];
+        return this.problems[this.currentProblemNumber - 1];
     }
 }

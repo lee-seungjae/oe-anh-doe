@@ -27,11 +27,12 @@ export class ProblemView implements ModalWindow
         this.$totalProblemCount = $('#problemDlg #totalProblemCount');    
 
         this.$enterButton.click(() => this.onEnterKey());
+        this.$answer.keyup(() => { this.updateQuestionText(); this.updateEnterButton(); });
     }
 
     onEnterKey(): void
     {
-        if (this.getAnswer() != '')
+        if (this.canEnter())
         {
             this.onEnter();
         }
@@ -40,8 +41,44 @@ export class ProblemView implements ModalWindow
     setUpQuestion(): void {
         this.$currentProblemNumber.text(this.model.getCurrentProblemNumber());
         this.$totalProblemCount.text(this.model.getTotalProblemCount());
-        this.$question.text(this.model.getCurrentProblem().questionText);
         this.$answer.val('');
+        this.updateQuestionText();
+        this.updateEnterButton();
+    }
+
+    updateQuestionText(): void
+    {
+        let problem = this.model.getCurrentProblem();
+        if (problem == null) { return; }
+        let qtext = problem.questionText;
+        let atext = this.getAnswer();
+       
+        this.$question.empty();
+        for (let i = 0; i < qtext.length; ++i)
+        {
+            let qchar = qtext.charAt(i);
+            let achar = atext.charAt(i);
+
+            let chrNode = $("<span>").text(qchar);
+            if (i >= atext.length) { chrNode.css('background', '#faa'); }
+            else if (qchar != achar) { chrNode.css('background', 'yellow'); }
+
+            this.$question.append(chrNode);
+        }
+    }
+
+    updateEnterButton(): void
+    {
+        let yes = this.canEnter();
+        this.$enterButton.removeClass(yes ? 'gray' : 'blue');
+        this.$enterButton.addClass(yes ? 'blue' : 'gray');
+    }
+
+    canEnter(): boolean
+    {
+        let problem = this.model.getCurrentProblem();
+        if (problem == null) { return false; }
+        return problem.questionText.length == this.getAnswer().length;
     }
 
     focusToInput(): void

@@ -37,7 +37,7 @@ let rawData = [
 ]
 
 $(document).ready(() => {
-    let problems = generateProblemList(rawData, 1);
+    let problems = generateProblemList(rawData, 5);
     let model = new Model(problems);
     let pview = new ProblemView(model);
     let rview = new ResultView(model);

@@ -59,7 +59,7 @@
     <script src='bundle.js'></script>
 </head>
 <body bgcolor="#e0e0e0">
-    <div id='problemDlg' class='dialog' style='width:1000px; height:700px;'>
+    <div id='problemDlg' class='dialog' style='width:1000px; height:700px; display:none;'>
         <div class="ui raised segment" style='padding:40px;'>
             <div class="ui" style="color: #999;"><span id="currentProblemNumber">1</span> / <span id="totalProblemCount">10</span></div>
 
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <div id='resultDlg' class='dialog' style='width:800px; margin-top:10%;'>
+    <div id='resultDlg' class='dialog' style='width:800px; margin-top:10%; display:none;'>
         <div class="ui raised segment" style='padding:40px;'>
             <table class="ui celled table">
                 <thead>
@@ -101,7 +101,7 @@
             </table>
 
             <div style='text-align:center;'>
-                <div id="retryButton" class="ui blue button" style='font-size:20px; margin-top:20px;'>다시 해보기 ⏎</div>
+                <div id="retryButton" class="ui blue button" style='font-size:20px; margin-top:20px;'>재도전! ⏎</div>
             </div>
             <div style='text-align:center;'>
                 <div id="perfect" style='font-size:20px; margin-top:30px;'>😄 모두 한번에 통과했어요!</div>
@@ -110,13 +110,15 @@
     </div>    
 
     <div id="modalBackground" class="modalBackground" style='display:none;'>
-        <div id="correctDlg" class="modalDialog" style='width:500px; animation:kf_popin 0.7s'>
+        <div id="correctDlg" class="modalDialog" style='width:500px; display:none;'>
             <div class="ui success message" style='padding:40px; text-align:center;'>
                 <div class="header" style='font-size:30px;'>맞았어요! 👏👏👏</div>
+
+                <div id="closeButton" class="ui success button" style='font-size:20px; margin-top:50px;'>CLOSE</div>
             </div>
         </div>
 
-        <div id="wrongDlg" class='modalDialog' style='animation:kf_drop 0.7s; width:800px;'>
+        <div id="wrongDlg" class='modalDialog' style='width:800px; display:none;'>
             <div class="ui warning message" style='padding:40px; text-align:center;'>
                 <div class="header" style='font-size:30px;'>틀렸어요... 😢</div>
                 <br/>
@@ -124,7 +126,7 @@
                     정답: "<span id='rightAnswer'>이번에 가 본 맛집은 너무 맛있어서 그 맛을 가늠할 수가 없었어요.</span>"
                 </div>
 
-                <div id="retry" class="ui orange button" style='font-size:20px; margin-top:50px;'>다시 해보기 ⏎</div>
+                <div id="closeButton" class="ui orange button" style='font-size:20px; margin-top:50px;'>CLOSE</div>
             </div>
         </div>
     </div>

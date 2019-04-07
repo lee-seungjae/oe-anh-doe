@@ -1,10 +1,11 @@
-import { generateProblemList } from './Generator'
 import { Model } from './Model'
 import { ProblemView } from './ProblemView'
 import { ResultView } from './ResultView';
+import { ModalDialog } from './ModalDialog';
+import { ModalWindowStack } from './ModalWindow';
+import { generateProblemList } from './Generator'
 
 // TODO:
-// 결과창 크게
 // 문제에 같은/다른 텍스트 하이라이트 표시
 
 let rawData = [
@@ -36,77 +37,98 @@ let rawData = [
 ]
 
 $(document).ready(() => {
-    //return testResultView();
-
-    let problems = generateProblemList(rawData, 5);
+    let problems = generateProblemList(rawData, 1);
     let model = new Model(problems);
     let pview = new ProblemView(model);
     let rview = new ResultView(model);
+    let wstack = new ModalWindowStack();
 
-    function reset()
+    showProblemView();
+
+    //-------------------------------------------------------------------------
+    function showProblemView()
     {
-        rview.show(false);
         model.goToStart();
+
         pview.setUpQuestion();
         pview.resetAnswerText();
-        pview.show(true);
-    }
-
-    pview.onEnter = () => {
-        let p = model.getCurrentProblem();
-        if (pview.getAnswer() !== p.rightAnswer)
-        {
-            alert(`틀렸어요.. 😢\n\n정답은 "${p.rightAnswer}" 입니다.\n\n다시 해볼까요?`)
-            model.retry();
-            pview.resetAnswerText();
-            return;
+        pview.onEnter = () => {
+            let p = model.getCurrentProblem();
+            if (pview.getAnswer() === p.rightAnswer)
+            {
+                model.next();
+                return showCorrectDlg();
+            }
+            else
+            {
+                return showWrongDlg(p.rightAnswer);
+            }
         }
 
-        alert('맞았어요! 👏')
-        model.next();
+        wstack.showAndPush(pview);
+        pview.focusToInput();
+    }
 
-        if (model.getCurrentProblem())
+    //-------------------------------------------------------------------------
+    function showCorrectDlg()
+    {
+        let buttonCaption = model.isEnded()
+            ? '결과 확인하기 ⏎'
+            : '다음 문제 ⏎';
+
+        let dlg = new ModalDialog('correctDlg', 'kf_popin 0.7s', buttonCaption);
+        wstack.showAndPush(dlg);
+
+        dlg.onClose = () =>
         {
-            pview.setUpQuestion();
-            pview.resetAnswerText();
+            wstack.hideAndPop(dlg);
+
+            if (model.isEnded())
+            {
+                wstack.hideAndPop(pview);
+                showResultView();
+            }
+            else
+            {
+                pview.setUpQuestion();
+                pview.resetAnswerText();
+            }
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    function showWrongDlg(rightAnswer: string)
+    {
+        let dlg = new ModalDialog('wrongDlg', 'kf_drop 0.7s', '다시 해보기 ⏎');
+        dlg.findChild('#rightAnswer').text(rightAnswer);
+        wstack.showAndPush(dlg);
+
+        dlg.onClose = () =>
+        {
+            wstack.hideAndPop(dlg);
+
+            model.retry();
+            pview.focusToInput();
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    function showResultView()
+    {
+        rview.update();
+        if (model.wasPerfect())
+        {
+            rview.onRetry = () => { };
         }
         else
         {
-            pview.show(false);
-            rview.update();
-            rview.show(true);
+            rview.onRetry = () => {
+                wstack.hideAndPop(rview);
+                showProblemView();
+            }                
         }
-    }
 
-    rview.onRetry = () => {
-        reset();
+        wstack.showAndPush(rview);
     }
-
-    // 초기화
-    reset();
 });
 
-function testResultView()
-{
-    let problems = [
-        { questionText: '외않되', rightAnswer: '왜안돼' },
-        { questionText: '시럽계', rightAnswer: '실업계' },
-        { questionText: '사생활치매', rightAnswer: '사생활침해' }
-    ];
-    let model = new Model(problems);
-    let rview = new ResultView(model);
-
-    model.goToStart();
-
-    model.next();
-
-    model.retry();
-    model.next();
-
-    model.retry();
-    model.retry();
-    model.next();
-
-    rview.update();
-    rview.onRetry = () => alert('RETRY');
-}

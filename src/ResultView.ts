@@ -1,6 +1,8 @@
 import { Model } from './Model';
+import { ModalWindow } from './ModalWindow'
 
-export class ResultView {
+export class ResultView implements ModalWindow
+{
     // controls
     private $root: JQuery;
     private $tbody: JQuery;
@@ -33,16 +35,18 @@ export class ResultView {
         });
     }
 
+    onEnterKey(): void
+    {
+        this.onRetry();
+    }
+
     update(): void {
         this.$tbody.empty();
-
-        let retryCountSum = 0;
 
         for (let i in this.model.problems)
         {
             let p = this.model.problems[i];
             let c = this.model.retryCounts[i];
-            retryCountSum += c;
 
             let tr: JQuery;
             if (c == 0)
@@ -58,15 +62,15 @@ export class ResultView {
             this.$tbody.append(tr);
         }
 
-        if (retryCountSum > 0)
-        {
-            this.$retryButton.show();
-            this.$perfect.hide();
-        }
-        else
+        if (this.model.wasPerfect())
         {
             this.$retryButton.hide();
             this.$perfect.show();
+        }
+        else
+        {
+            this.$retryButton.show();
+            this.$perfect.hide();
         }
     }
 

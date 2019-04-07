@@ -1,6 +1,8 @@
 import { Model } from './Model';
+import { ModalWindow } from './ModalWindow'
 
-export class ProblemView {
+export class ProblemView implements ModalWindow
+{
     // controls
     private $root: JQuery;
     private $question: JQuery;
@@ -24,23 +26,27 @@ export class ProblemView {
         this.$currentProblemNumber = $('#problemDlg #currentProblemNumber');
         this.$totalProblemCount = $('#problemDlg #totalProblemCount');    
 
-        this.$answer.keypress(event => {
-            if (event.originalEvent.keyCode === 13) {
-                this.onEnter();
-                event.stopPropagation();
-            }
-        });
-    
-        this.$enterButton.click(() => {
+        this.$enterButton.click(() => this.onEnterKey());
+    }
+
+    onEnterKey(): void
+    {
+        if (this.getAnswer() != '')
+        {
             this.onEnter();
-        });
+        }
     }
 
     setUpQuestion(): void {
-        this.$currentProblemNumber.text(this.model.currentProblemNumber);
-        this.$totalProblemCount.text(this.model.totalProblemCount);
+        this.$currentProblemNumber.text(this.model.getCurrentProblemNumber());
+        this.$totalProblemCount.text(this.model.getTotalProblemCount());
         this.$question.text(this.model.getCurrentProblem().questionText);
-        this.$answer.val('').focus();
+        this.$answer.val('');
+    }
+
+    focusToInput(): void
+    {
+        this.$answer.focus();
     }
 
     getAnswer(): string {

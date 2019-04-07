@@ -81,17 +81,23 @@ export class ProblemView implements ModalWindow
         return problem.questionText.length == this.getAnswer().length;
     }
 
-    focusToInput(): void
+    getAnswer(): string
     {
-        this.$answer.focus();
-    }
-
-    getAnswer(): string {
         return this.$answer.val().toString();
     }
 
-    resetAnswerText(): void {
+    resetAnswerText(): void
+    {
         this.$answer.val('');
+    }
+
+    enableInput(yes: boolean): void
+    {
+        this.$answer.prop('disabled', !yes);
+        if (yes)
+        {
+            this.$answer.focus();
+        }
     }
 
     show(yes: boolean): void {

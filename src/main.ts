@@ -49,7 +49,11 @@ $(document).ready(() => {
 
         pview.setUpQuestion();
         pview.resetAnswerText();
+        wstack.showAndPush(pview);
+        pview.enableInput(true);
+
         pview.onEnter = () => {
+            pview.enableInput(false);
             let p = model.getCurrentProblem();
             if (pview.getAnswer() === p.rightAnswer)
             {
@@ -60,9 +64,6 @@ $(document).ready(() => {
                 return showWrongDlg(p.rightAnswer);
             }
         }
-
-        wstack.showAndPush(pview);
-        pview.focusToInput();
     }
 
     //-------------------------------------------------------------------------
@@ -89,6 +90,7 @@ $(document).ready(() => {
             {
                 pview.setUpQuestion();
                 pview.resetAnswerText();
+                pview.enableInput(true);
             }
         }
     }
@@ -105,7 +107,7 @@ $(document).ready(() => {
             wstack.hideAndPop(dlg);
 
             model.retry();
-            pview.focusToInput();
+            pview.enableInput(true);
         }
     }
 

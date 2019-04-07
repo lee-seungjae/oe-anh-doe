@@ -83,12 +83,24 @@ export class ProblemView implements ModalWindow
 
     getAnswer(): string
     {
-        return this.$answer.val().toString();
+        let rv = this.$answer.val().toString();
+        
+        // trim
+        rv = rv.replace(/^\s+|\s+$/g,"");
+
+        // 중복 공백을 하나의 공백으로
+        let oldLength: number;
+        do {
+            oldLength = rv.length;
+            rv = rv.replace(/  /g, ' ');
+        } while (rv.length < oldLength)
+
+        return rv;
     }
 
     resetAnswerText(): void
     {
-        this.$answer.val('');
+        this.$answer.val('')
     }
 
     enableInput(yes: boolean): void

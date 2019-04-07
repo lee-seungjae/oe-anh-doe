@@ -34,8 +34,10 @@ export class Model
 
     next(): void
     {
-        console.assert(!this.isEnded());
-        this.retryCounts.push(this.thisProblemRetryCount);
+        if (!this.isEnded())
+        {
+            this.retryCounts.push(this.thisProblemRetryCount);
+        }
         this.thisProblemRetryCount = 0;
     }
 

@@ -34,7 +34,7 @@ let rawData = [
 ]
 
 $(document).ready(() => {
-    let problems = generateProblemList(rawData, 2);
+    let problems = generateProblemList(rawData, 5);
     let model = new Model(problems);
     let pview = new ProblemView(model);
     let rview = new ResultView(model);
@@ -68,7 +68,7 @@ $(document).ready(() => {
     //-------------------------------------------------------------------------
     function showCorrectDlg()
     {
-        let buttonCaption = model.isEnded()
+        let buttonCaption = model.getCurrentProblemNumber() >= model.getTotalProblemCount()
             ? '결과 확인하기 ⏎'
             : '다음 문제 ⏎';
 

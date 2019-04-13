@@ -23,7 +23,6 @@ export class ModalDialog implements ModalWindow
         this.$closeButton = child('#closeButton')
         this.$closeButton.text(buttonCaption);
         this.$closeButton.click(() => this.onClose());
-        this.$closeButton.focus();
     }
 
     onEnterKey(): void
@@ -43,6 +42,7 @@ export class ModalDialog implements ModalWindow
             this.$background.show();
             this.$window.css('animation', this.animationStyle);
             this.$window.show();
+            this.$closeButton.focus();
         }
         else
         {

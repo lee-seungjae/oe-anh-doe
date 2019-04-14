@@ -1,6 +1,6 @@
 import { Model } from './Model'
 import { ProblemView } from './ProblemView'
-import { ResultView } from './ResultView';
+import { ResultDlg } from './ResultDlg';
 import { FeedbackDlg } from './ModalDialog';
 import { generateProblemList } from './Generator'
 import { Problem } from './Problem';
@@ -37,8 +37,8 @@ let rawData = [
 $(document).ready(async () => {
     let problems = generateProblemList(rawData, 5);
     let model = new Model(problems);
-    let pview = new ProblemView(model);
-    let rview = new ResultView(model);
+    let problemView = new ProblemView(model);
+    let resultDlg = new ResultDlg(model);
     let correctDlg = new FeedbackDlg('correctDlg', 'kf_popin 0.7s');
     let wrongDlg = new FeedbackDlg('wrongDlg', 'kf_drop 0.7s');
 
@@ -48,30 +48,30 @@ $(document).ready(async () => {
     {
         model.goToStart();
 
-        pview.show(true);
+        problemView.show(true);
         while (!model.isEnded())
         {
             await solveSingleProblem(model.getCurrentProblem());
             model.next();
         }
-        pview.show(false);
+        problemView.show(false);
 
-        await rview.doModal();
+        await resultDlg.doModal();
         // 노미스였으면 리턴하지 않음
     }
 
     //-------------------------------------------------------------------------
     async function solveSingleProblem(p: Problem): Promise<any>
     {
-        pview.setUpQuestion();
-        pview.resetAnswerText();
+        problemView.setUpQuestion();
+        problemView.resetAnswerText();
         while (true)
         {
-            pview.enableInput(true);
+            problemView.enableInput(true);
             await waitForEnter();
-            pview.enableInput(false);
+            problemView.enableInput(false);
 
-            if (pview.getAnswer() !== p.rightAnswer)
+            if (problemView.getAnswer() !== p.rightAnswer)
             {
                 wrongDlg.findChild('#rightAnswer').text(p.rightAnswer);
                 await wrongDlg.doModal('다시 해보기 ⏎');
@@ -91,7 +91,7 @@ $(document).ready(async () => {
     async function waitForEnter(): Promise<any>
     {
         return new Promise<any>((resolve, reject) => {
-            pview.onEnter = () => resolve();
+            problemView.onEnter = () => resolve();
         });
     }
 });

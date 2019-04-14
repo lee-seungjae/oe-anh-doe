@@ -1,6 +1,6 @@
 import { Model } from './Model';
 
-export class ResultView
+export class ResultDlg
 {
     // controls
     private $root: JQuery;

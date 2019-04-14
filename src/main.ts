@@ -1,7 +1,7 @@
 import { Model } from './Model'
 import { ProblemView } from './ProblemView'
 import { ResultDlg } from './ResultDlg';
-import { FeedbackDlg } from './ModalDialog';
+import { FeedbackDlg } from './FeedbackDlg';
 import { generateProblemList } from './Generator'
 import { Problem } from './Problem';
 

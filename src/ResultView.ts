@@ -10,28 +10,48 @@ export class ResultView
     private $retryButton: JQuery;
     private $perfect: JQuery;
 
-    // events
-    onRetry: () => void;
-
-    model: Model;
+    // fields
+    private resolve: (value?: any) => void;
+    private model: Model;
     
     constructor(model: Model) {
         this.model = model;
 
         this.$root = $('#resultDlg')
-        let child = (cname: string) => $(`#resultDlg ${cname}`);
-        this.$tbody = child('#tbody')
-        this.$trYesTemplate = child('#trYes')
-        this.$trNoTemplate = child('#trNo')
-        this.$retryButton = child('#retryButton')
-        this.$perfect = child('#perfect')
+        this.$tbody = this.$root.find('#tbody')
+        this.$trYesTemplate = this.$root.find('#trYes')
+        this.$trNoTemplate = this.$root.find('#trNo')
+        this.$retryButton = this.$root.find('#retryButton')
+        this.$perfect = this.$root.find('#perfect')
 
         this.$trYesTemplate.detach();
         this.$trNoTemplate.detach();
     
-        this.$retryButton.click(() => {
-            this.onRetry();
+        this.$retryButton.click(() => this.endModal());
+    }
+
+    doModal(): Promise<string>
+    {
+        return new Promise<any>((resolve, reject) => {
+            console.assert(this.resolve === undefined);
+            this.resolve = resolve;
+
+            // UI 이벤트에서 에러핸들링하기가 마땅찮아서
+            // reject는 쓰지 않는다
+            this.update();
+            this.$root.show();
+            this.$retryButton.focus();
         });
+    }
+
+    endModal(): void
+    {
+        this.$root.hide();
+
+        console.assert(this.resolve !== undefined);
+        let resolve = this.resolve;
+        this.resolve = undefined;
+        resolve();
     }
 
     update(): void {
@@ -65,18 +85,6 @@ export class ResultView
         {
             this.$retryButton.show();
             this.$perfect.hide();
-        }
-    }
-
-    show(yes: boolean): void {
-        if (yes)
-        {
-            this.$root.show();
-            this.$retryButton.focus();
-        }
-        else
-        {
-            this.$root.hide();
         }
     }
 }

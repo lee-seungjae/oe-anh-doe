@@ -110,6 +110,7 @@ export class ProblemView
     resetAnswerText(): void
     {
         this.$answer.val('')
+        this.updateEnterButton();
     }
 
     enableInput(yes: boolean): void

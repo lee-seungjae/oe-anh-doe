@@ -1,8 +1,9 @@
 import { Model } from './Model'
 import { ProblemView } from './ProblemView'
 import { ResultView } from './ResultView';
-import { ModalDialog } from './ModalDialog';
+import { FeedbackDlg } from './ModalDialog';
 import { generateProblemList } from './Generator'
+import { Problem } from './Problem';
 
 let rawData = [
     '{벚|벗|벛|벋|벝|벘}{꽃|꼿|꽂|꽅|꼳|꽀} 가지를 {꼿꼿|꽂꽂|꽃꽃|꼳꼳|꽅꽅|꽀꽀}하게 {꽂|꼿|꽃|꼳|꽅|꽀}{았|앗}다.',
@@ -33,101 +34,65 @@ let rawData = [
     '발 {밟|발|밥}지 {않|안}기!'
 ]
 
-$(document).ready(() => {
+$(document).ready(async () => {
     let problems = generateProblemList(rawData, 5);
     let model = new Model(problems);
     let pview = new ProblemView(model);
     let rview = new ResultView(model);
-
-    showProblemView();
+    let correctDlg = new FeedbackDlg('correctDlg', 'kf_popin 0.7s');
+    let wrongDlg = new FeedbackDlg('wrongDlg', 'kf_drop 0.7s');
 
     //-------------------------------------------------------------------------
-    function showProblemView()
+    // 메인 루프
+    while (true)
     {
         model.goToStart();
 
+        pview.show(true);
+        while (!model.isEnded())
+        {
+            await solveSingleProblem(model.getCurrentProblem());
+            model.next();
+        }
+        pview.show(false);
+
+        await rview.doModal();
+        // 노미스였으면 리턴하지 않음
+    }
+
+    //-------------------------------------------------------------------------
+    async function solveSingleProblem(p: Problem): Promise<any>
+    {
         pview.setUpQuestion();
         pview.resetAnswerText();
-        pview.show(true);
-        pview.enableInput(true);
-
-        pview.onEnter = () => {
-            pview.enableInput(false);
-            let p = model.getCurrentProblem();
-            if (pview.getAnswer() === p.rightAnswer)
-            {
-                return showCorrectDlg();
-            }
-            else
-            {
-                return showWrongDlg(p.rightAnswer);
-            }
-        }
-    }
-
-    //-------------------------------------------------------------------------
-    function showCorrectDlg()
-    {
-        let buttonCaption = model.getCurrentProblemNumber() >= model.getTotalProblemCount()
-            ? '결과 확인하기 ⏎'
-            : '다음 문제 ⏎';
-
-        let dlg = new ModalDialog('correctDlg', 'kf_popin 0.7s', buttonCaption);
-        dlg.show(true);
-
-        dlg.onClose = () =>
+        while (true)
         {
-            console.log('correct onClose')
-            dlg.show(false);
-            model.next();
-
-            if (model.isEnded())
-            {
-                pview.show(false);
-                showResultView();
-            }
-            else
-            {
-                pview.setUpQuestion();
-                pview.resetAnswerText();
-                pview.enableInput(true);
-            }
-        }
-    }
-
-    //-------------------------------------------------------------------------
-    function showWrongDlg(rightAnswer: string)
-    {
-        let dlg = new ModalDialog('wrongDlg', 'kf_drop 0.7s', '다시 해보기 ⏎');
-        dlg.findChild('#rightAnswer').text(rightAnswer);
-        dlg.show(true);
-
-        dlg.onClose = () =>
-        {
-            dlg.show(false);
-
-            model.retry();
             pview.enableInput(true);
+            await waitForEnter();
+            pview.enableInput(false);
+
+            if (pview.getAnswer() !== p.rightAnswer)
+            {
+                wrongDlg.findChild('#rightAnswer').text(p.rightAnswer);
+                await wrongDlg.doModal('다시 해보기 ⏎');
+                model.retry();
+            }
+            else
+            {
+                let caption = (model.getCurrentProblemNumber() >= model.getTotalProblemCount())
+                    ? '결과 확인하기 ⏎'
+                    : '다음 문제 ⏎';
+                return await correctDlg.doModal(caption);
+            }
         }
     }
 
     //-------------------------------------------------------------------------
-    function showResultView()
+    async function waitForEnter(): Promise<any>
     {
-        rview.update();
-        if (model.wasPerfect())
-        {
-            rview.onRetry = () => { };
-        }
-        else
-        {
-            rview.onRetry = () => {
-                rview.show(false);
-                showProblemView();
-            }                
-        }
-
-        rview.show(true);
+        return new Promise<any>((resolve, reject) => {
+            pview.onEnter = () => resolve();
+        });
     }
 });
 

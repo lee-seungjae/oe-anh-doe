@@ -1,4 +1,4 @@
-export class ModalDialog
+export class FeedbackDlg
 {
     // controls
     private $background: JQuery;
@@ -7,20 +7,16 @@ export class ModalDialog
 
     // fields
     private animationStyle: string;
+    private resolve: (value?: any) => void;
 
-    // events
-    onClose: () => void;
-
-    constructor(nodeId: string, animationStyle: string, buttonCaption: string)
+    constructor(nodeId: string, animationStyle: string)
     {
         this.animationStyle = animationStyle;
 
-        this.$background = $('#modalBackground')
-        let child = (cname: string) => $(`#modalBackground ${cname}`);
-        this.$window = child('#' + nodeId)
-        this.$closeButton = child('#closeButton')
-        this.$closeButton.text(buttonCaption);
-        this.$closeButton.click(() => this.onClose());
+        this.$background = $('#modalBackground');
+        this.$window = $(`#modalBackground #${nodeId}`);
+        this.$closeButton = this.findChild('#closeButton');
+        this.$closeButton.click((ev) => { this.endModal(); ev.preventDefault(); ev.stopPropagation(); });
     }
 
     findChild(selector: string): JQuery
@@ -28,19 +24,32 @@ export class ModalDialog
         return this.$window.find(selector);
     }
 
-    show(yes: boolean): void
+    doModal(buttonCaption: string): Promise<string>
     {
-        if (yes)
-        {
+        return new Promise<any>((resolve, reject) => {
+            console.assert(this.resolve === undefined);
+            this.resolve = resolve;
+            console.log('SET RESOLVE2', resolve);
+
+            // UI 이벤트에서 에러핸들링하기가 마땅찮아서
+            // reject는 쓰지 않는다
+            this.$closeButton.text(buttonCaption);
             this.$background.show();
             this.$window.css('animation', this.animationStyle);
             this.$window.show();
             this.$closeButton.focus();
-        }
-        else
-        {
-            this.$background.hide();
-            this.$window.hide();
-        }
+        });
+    }
+
+    endModal(): void
+    {
+        console.log('END MODAL2', this.resolve);
+        this.$background.hide();
+        this.$window.hide();
+
+        console.assert(this.resolve !== undefined);
+        let resolve = this.resolve;
+        this.resolve = undefined;
+        resolve();
     }
 }

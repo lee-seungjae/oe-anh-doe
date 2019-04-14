@@ -28,6 +28,16 @@ export class ProblemView implements ModalWindow
 
         this.$enterButton.click(() => this.onEnterKey());
         this.$answer.keyup(() => { this.updateQuestionText(); this.updateEnterButton(); });
+
+        this.$answer.keypress(
+            event => {
+                if (event.keyCode === 13) {
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    this.onEnterKey();
+                }
+            });
     }
 
     onEnterKey(): void

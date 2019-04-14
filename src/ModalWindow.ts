@@ -10,20 +10,6 @@ export class ModalWindowStack
 
     constructor()
     {
-        document.onkeypress = (event => {
-            if (event.keyCode === 13) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                let len = this.windows.length;
-                if (len == 0) { return; }
-
-                // 콜백 실행 {
-                // 이 안에서 this.windows가 바뀔 수 있음.
-                this.windows[len - 1].onEnterKey();
-                // 콜백 실행 }
-            }
-        });
     }
 
     showAndPush(wnd: ModalWindow)

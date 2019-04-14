@@ -78,6 +78,7 @@ export class ResultView implements ModalWindow
         if (yes)
         {
             this.$root.show();
+            this.$retryButton.focus();
         }
         else
         {

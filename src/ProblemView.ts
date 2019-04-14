@@ -1,7 +1,6 @@
 import { Model } from './Model';
-import { ModalWindow } from './ModalWindow'
 
-export class ProblemView implements ModalWindow
+export class ProblemView
 {
     // controls
     private $root: JQuery;

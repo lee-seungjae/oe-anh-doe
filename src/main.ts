@@ -2,7 +2,6 @@ import { Model } from './Model'
 import { ProblemView } from './ProblemView'
 import { ResultView } from './ResultView';
 import { ModalDialog } from './ModalDialog';
-import { ModalWindowStack } from './ModalWindow';
 import { generateProblemList } from './Generator'
 
 let rawData = [
@@ -39,7 +38,6 @@ $(document).ready(() => {
     let model = new Model(problems);
     let pview = new ProblemView(model);
     let rview = new ResultView(model);
-    let wstack = new ModalWindowStack();
 
     showProblemView();
 
@@ -50,7 +48,7 @@ $(document).ready(() => {
 
         pview.setUpQuestion();
         pview.resetAnswerText();
-        wstack.showAndPush(pview);
+        pview.show(true);
         pview.enableInput(true);
 
         pview.onEnter = () => {
@@ -75,16 +73,17 @@ $(document).ready(() => {
             : '다음 문제 ⏎';
 
         let dlg = new ModalDialog('correctDlg', 'kf_popin 0.7s', buttonCaption);
-        wstack.showAndPush(dlg);
+        dlg.show(true);
 
         dlg.onClose = () =>
         {
-            wstack.hideAndPop(dlg);
+            console.log('correct onClose')
+            dlg.show(false);
             model.next();
 
             if (model.isEnded())
             {
-                wstack.hideAndPop(pview);
+                pview.show(false);
                 showResultView();
             }
             else
@@ -101,11 +100,11 @@ $(document).ready(() => {
     {
         let dlg = new ModalDialog('wrongDlg', 'kf_drop 0.7s', '다시 해보기 ⏎');
         dlg.findChild('#rightAnswer').text(rightAnswer);
-        wstack.showAndPush(dlg);
+        dlg.show(true);
 
         dlg.onClose = () =>
         {
-            wstack.hideAndPop(dlg);
+            dlg.show(false);
 
             model.retry();
             pview.enableInput(true);
@@ -123,12 +122,12 @@ $(document).ready(() => {
         else
         {
             rview.onRetry = () => {
-                wstack.hideAndPop(rview);
+                rview.show(false);
                 showProblemView();
             }                
         }
 
-        wstack.showAndPush(rview);
+        rview.show(true);
     }
 });
 

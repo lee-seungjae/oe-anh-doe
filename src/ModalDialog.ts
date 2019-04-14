@@ -1,6 +1,4 @@
-import { ModalWindow } from './ModalWindow'
-
-export class ModalDialog implements ModalWindow
+export class ModalDialog
 {
     // controls
     private $background: JQuery;
@@ -23,11 +21,6 @@ export class ModalDialog implements ModalWindow
         this.$closeButton = child('#closeButton')
         this.$closeButton.text(buttonCaption);
         this.$closeButton.click(() => this.onClose());
-    }
-
-    onEnterKey(): void
-    {
-        this.onClose();
     }
 
     findChild(selector: string): JQuery

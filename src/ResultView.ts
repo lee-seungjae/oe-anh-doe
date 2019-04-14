@@ -1,7 +1,6 @@
 import { Model } from './Model';
-import { ModalWindow } from './ModalWindow'
 
-export class ResultView implements ModalWindow
+export class ResultView
 {
     // controls
     private $root: JQuery;
@@ -33,11 +32,6 @@ export class ResultView implements ModalWindow
         this.$retryButton.click(() => {
             this.onRetry();
         });
-    }
-
-    onEnterKey(): void
-    {
-        this.onRetry();
     }
 
     update(): void {

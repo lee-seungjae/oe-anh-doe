@@ -20,7 +20,7 @@
     "@types/jquery": "^3.3.29"
   },
   "devDependencies": {
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
